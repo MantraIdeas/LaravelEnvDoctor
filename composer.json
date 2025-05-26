@@ -1,0 +1,28 @@
+{
+    "name": "mantraideas/laravel-env-doctor",
+    "description": "LaravelEnvDoctor is a developer-friendly CLI tool for Laravel that checks your .env variables, validates the current environment, and ensures directory permissions are correctly set — helping you catch misconfigurations before they become problems.",
+    "type": "library",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Mantraideas\\LaravelEnvDoctor\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Dipesh Khanal",
+            "email": "dipeshkhanal79@gmail.com",
+            "homepage": "https://www.khanaldipesh.com.np",
+            "role": "Maintainer"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {},
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Mantraideas\\LaravelEnvDoctor\\LaravelEnvDoctorServiceProvider"
+            ]
+        }
+    }
+}
