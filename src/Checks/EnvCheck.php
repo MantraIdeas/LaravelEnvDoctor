@@ -1,6 +1,6 @@
 <?php
 
-namespace mantraideas\LaravelEnvDoctor\Checks;
+namespace Mantraideas\LaravelEnvDoctor\Checks;
 
 class EnvCheck
 {
