@@ -3,8 +3,8 @@
 namespace Mantraideas\LaravelEnvDoctor\Commands;
 
 use Illuminate\Console\Command;
-use mantraideas\LaravelEnvDoctor\Checks\DirectoryPermissionCheck;
-use mantraideas\LaravelEnvDoctor\Checks\EnvCheck;
+use Mantraideas\LaravelEnvDoctor\Checks\DirectoryPermissionCheck;
+use Mantraideas\LaravelEnvDoctor\Checks\EnvCheck;
 use Symfony\Component\Console\Command\Command as CommandAlias;
 
 class EnvDoctorCommand extends Command
