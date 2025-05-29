@@ -3,7 +3,7 @@
 namespace mantraideas\LaravelEnvDoctor;
 
 use Illuminate\Support\ServiceProvider;
-use mantraideas\LaravelEnvDoctor\Commands\EnvDoctorCommand;
+use Mantraideas\LaravelEnvDoctor\Commands\EnvDoctorCommand;
 
 class LaravelEnvDoctorServiceProvider extends ServiceProvider
 {
