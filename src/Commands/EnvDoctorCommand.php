@@ -1,6 +1,6 @@
 <?php
 
-namespace mantraideas\LaravelEnvDoctor\Commands;
+namespace Mantraideas\LaravelEnvDoctor\Commands;
 
 use Illuminate\Console\Command;
 use mantraideas\LaravelEnvDoctor\Checks\DirectoryPermissionCheck;
