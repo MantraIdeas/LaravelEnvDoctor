@@ -9,12 +9,23 @@ class EnvCheck
         $results = [];
 
         foreach ($envKeys as $key) {
-            $value = env($key);
+            $hasKey = array_key_exists($key, $_ENV) || array_key_exists($key, $_SERVER);
 
-            if (empty($value)) {
+            if (! $hasKey) {
                 $results[] = [
                     'status' => 'fail',
-                    'message' => "❌ {$key} is missing or empty.",
+                    'message' => "❌ {$key} is missing.",
+                ];
+                continue;
+            }
+
+            $value = env($key);
+
+            // consider empty only if null or empty string
+            if ($value === null || $value === '') {
+                $results[] = [
+                    'status' => 'fail',
+                    'message' => "❌ {$key} is empty.",
                 ];
             } else {
                 $results[] = [
@@ -26,4 +37,5 @@ class EnvCheck
 
         return $results;
     }
+
 }
