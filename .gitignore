@@ -1,18 +1,9 @@
-/vendor/
-/node_modules/
-
 /.idea
 /.vscode
 /.vagrant
 
-.phpunit.result.cache
-.phpunit.cache
-.php-cs-fixer.cache
-
-/phpunit.xml
-composer.lock
-package-lock.json
-yarn.lock
-
 .DS_Store
-Thumbs.db
+
+vendor
+.phpunit.cache
+.idea
