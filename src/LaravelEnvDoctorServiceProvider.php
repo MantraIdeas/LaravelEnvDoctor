@@ -23,7 +23,7 @@ class LaravelEnvDoctorServiceProvider extends ServiceProvider
     public function boot(): void
     {
         $this->publishes([
-            __DIR__ . '/config/laravel-env-doctor.php' => config_path('laravel-env-doctor.php'),
+            __DIR__.'/config/laravel-env-doctor.php' => config_path('laravel-env-doctor.php'),
         ], 'laravel-env-doctor-config');
     }
 }

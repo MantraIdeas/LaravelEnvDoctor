@@ -30,21 +30,21 @@ return [
 
         'LOG_CHANNEL',
         'LOG_STACK',
-//        'LOG_DEPRECATIONS_CHANNEL',
+        //        'LOG_DEPRECATIONS_CHANNEL',
         'LOG_LEVEL',
 
         'DB_CONNECTION',
-//        'DB_HOST',
-//        'DB_PORT',
-//        'DB_DATABASE',
-//        'DB_USERNAME',
-//        'DB_PASSWORD',
+        //        'DB_HOST',
+        //        'DB_PORT',
+        //        'DB_DATABASE',
+        //        'DB_USERNAME',
+        //        'DB_PASSWORD',
 
         'SESSION_DRIVER',
         'SESSION_LIFETIME',
         'SESSION_ENCRYPT',
         'SESSION_PATH',
-//        'SESSION_DOMAIN',
+        //        'SESSION_DOMAIN',
 
         'BROADCAST_CONNECTION',
         'FILESYSTEM_DISK',
@@ -56,22 +56,22 @@ return [
 
         'REDIS_CLIENT',
         'REDIS_HOST',
-//        'REDIS_PASSWORD',
+        //        'REDIS_PASSWORD',
         'REDIS_PORT',
 
         'MAIL_MAILER',
-//        'MAIL_SCHEME',
+        //        'MAIL_SCHEME',
         'MAIL_HOST',
         'MAIL_PORT',
-//        'MAIL_USERNAME',
-//        'MAIL_PASSWORD',
+        //        'MAIL_USERNAME',
+        //        'MAIL_PASSWORD',
         'MAIL_FROM_ADDRESS',
         'MAIL_FROM_NAME',
 
-//        'AWS_ACCESS_KEY_ID',
-//        'AWS_SECRET_ACCESS_KEY',
+        //        'AWS_ACCESS_KEY_ID',
+        //        'AWS_SECRET_ACCESS_KEY',
         'AWS_DEFAULT_REGION',
-//        'AWS_BUCKET',
+        //        'AWS_BUCKET',
         'AWS_USE_PATH_STYLE_ENDPOINT',
 
         'VITE_APP_NAME',
@@ -87,6 +87,12 @@ return [
     | Recommended permissions:
     | - 0775 for storage and cache directories (owner and group can write)
     | - 0777 only if absolutely necessary (less secure)
+    |
+    | Example:
+    |    [
+    |        'path' => storage_path(),
+    |        'required_permission' => 755,
+    |    ]
     |
     */
     'directories_to_check' => [
@@ -113,6 +119,30 @@ return [
         [
             'path' => base_path('bootstrap/cache'),
             'required_permission' => 755,
+        ],
+    ],
+
+    /*
+   |--------------------------------------------------------------------------
+   | File Existence Check
+   |--------------------------------------------------------------------------
+   |
+   | These files must exist and be readable for the application to function
+   | properly. Common examples include SSL certificates, OAuth keys, and
+   | configuration files. You can optionally enforce specific permissions.
+   |
+   | Example:
+   |    [
+   |        'path' => storage_path('keys/private.pem'),
+   |        'required_permission' => 600,
+   |        'check_permissions' => true,
+   |     ],
+   |
+   |
+   */
+    'files_to_check' => [
+        [
+            'path' => base_path('.env'),
         ],
     ],
 ];

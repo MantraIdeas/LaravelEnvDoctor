@@ -8,10 +8,13 @@
 
 A diagnostic tool that checks your Laravel application's environment configuration and directory permissions to prevent common deployment issues.
 
+> **Version 1.0.5+** adds a **File Existence Check** — verify that critical files (`.env`, SSL certificates, OAuth keys) exist, are readable, and have the correct permissions.
+
 ## Features
 
 - ✅ Checks for required `.env` variables
 - 🔒 Verifies directory permissions
+- 📄 Checks that critical files exist and are readable (v1.0.5+)
 - 📊 Provides a summary report
 - 📝 Optional logging of results
 - 🎨 Beautiful console output
@@ -165,6 +168,30 @@ return [
 
         // Add more directories as needed
     ],
+
+    /*
+   |--------------------------------------------------------------------------
+   | File Existence Check
+   |--------------------------------------------------------------------------
+   |
+   | These files must exist and be readable for the application to function
+   | properly. Common examples include SSL certificates, OAuth keys, and
+   | configuration files. You can optionally enforce specific permissions.
+   |
+   | Example:
+   |    [
+   |        'path' => storage_path('keys/private.pem'),
+   |        'required_permission' => 600,
+   |        'check_permissions' => true,
+   |     ],
+   |
+   |
+   */
+    'files_to_check' => [
+        [
+            'path' => base_path('.env'),
+        ],
+    ],
 ];
 
 ```
@@ -205,11 +232,18 @@ Verifying directory permissions and writability
 | ✓ PASS | ✅ /Users/dipeshkhanal/projects/Mantra Ideas/OSS/laravelEnvDoctor/bootstrap/cache is writable (Permissions: 755)            |
 +--------+-----------------------------------------------------------------------------------------------------------------------------+
 
+📄 FILE EXISTENCE CHECK
+Verifying required files exist and are accessible
++--------+----------------------------------------------------------------+
+| Status | Message                                                        |
++--------+----------------------------------------------------------------+
+| ✓ PASS | ✅ /Users/dipeshkhanal/projects/Mantra Ideas/OSS/laravelEnvDoctor/.env exists and is readable (Permissions: 644) |
++--------+----------------------------------------------------------------+
 
 ┌───────────────────────────────────┐
 │ 🩺  DIAGNOSIS SUMMARY             │
 ├───────────────────────────────────┤
-│ Total checks performed: 13        │
+│ Total checks performed: 14        │
 │ Issues found: 0                   │
 │ Success rate: 100%                │
 └───────────────────────────────────┘
@@ -236,8 +270,10 @@ You can also log the results to a file by using the `--log` option and it will b
 [2025-05-26 06:35:44] local.INFO: [EnvDoctor] ✓ PASS: ✅ /Users/dipeshkhanal/projects/Mantra Ideas/OSS/laravelEnvDoctor/storage/framework/sessions is writable (Permissions: 755)
 [2025-05-26 06:35:44] local.INFO: [EnvDoctor] ✓ PASS: ✅ /Users/dipeshkhanal/projects/Mantra Ideas/OSS/laravelEnvDoctor/storage/framework/views is writable (Permissions: 755)
 [2025-05-26 06:35:44] local.INFO: [EnvDoctor] ✓ PASS: ✅ /Users/dipeshkhanal/projects/Mantra Ideas/OSS/laravelEnvDoctor/bootstrap/cache is writable (Permissions: 755)
+[2025-05-26 06:35:44] local.INFO: [EnvDoctor] ---- FILE EXISTENCE CHECK ----
+[2025-05-26 06:35:44] local.INFO: [EnvDoctor] ✓ PASS: ✅ /Users/dipeshkhanal/projects/Mantra Ideas/OSS/laravelEnvDoctor/.env exists and is readable (Permissions: 644)
 [2025-05-26 06:35:44] local.INFO: [EnvDoctor] ----- DIAGNOSIS SUMMARY -----
-[2025-05-26 06:35:44] local.INFO: [EnvDoctor] Total checks performed: 13
+[2025-05-26 06:35:44] local.INFO: [EnvDoctor] Total checks performed: 14
 [2025-05-26 06:35:44] local.INFO: [EnvDoctor] Issues found: 0
 [2025-05-26 06:35:44] local.INFO: [EnvDoctor] Success rate: 100%
 ```
