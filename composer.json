@@ -8,6 +8,11 @@
             "Mantraideas\\LaravelEnvDoctor\\": "src/"
         }
     },
+    "autoload-dev": {
+        "psr-4": {
+            "Mantraideas\\LaravelEnvDoctor\\Tests\\": "tests/"
+        }
+    },
     "authors": [
         {
             "name": "Dipesh Khanal",
@@ -17,7 +22,21 @@
         }
     ],
     "minimum-stability": "dev",
+    "prefer-stable": true,
     "require": {},
+    "config": {
+        "allow-plugins": {
+            "pestphp/pest-plugin": true
+        }
+    },
+    "require-dev": {
+        "orchestra/testbench": "^9.0",
+        "pestphp/pest": "^3.0",
+        "pestphp/pest-plugin-laravel": "^3.0"
+    },
+    "scripts": {
+        "test": "vendor/bin/pest"
+    },
     "extra": {
         "laravel": {
             "providers": [
