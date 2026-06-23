@@ -1,0 +1,9 @@
+/.idea
+/.vscode
+/.vagrant
+
+.DS_Store
+
+vendor
+.phpunit.cache
+.idea

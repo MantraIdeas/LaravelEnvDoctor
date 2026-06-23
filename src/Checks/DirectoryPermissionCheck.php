@@ -10,7 +10,7 @@ class DirectoryPermissionCheck
 
         foreach ($directories as $dir) {
             $path = $dir['path'] ?? null;
-            $required = $dir['required_permission'] ?? 0775;
+            $required = $dir['required_permission'] ?? 775;
 
             if (! $path || ! file_exists($path)) {
                 $results[] = [
