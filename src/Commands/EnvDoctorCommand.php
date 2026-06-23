@@ -5,12 +5,14 @@ namespace Mantraideas\LaravelEnvDoctor\Commands;
 use Illuminate\Console\Command;
 use Mantraideas\LaravelEnvDoctor\Checks\DirectoryPermissionCheck;
 use Mantraideas\LaravelEnvDoctor\Checks\EnvCheck;
+use Mantraideas\LaravelEnvDoctor\Checks\FileExistenceCheck;
 use Symfony\Component\Console\Command\Command as CommandAlias;
 
 class EnvDoctorCommand extends Command
 {
     protected $signature = 'env:doctor
     {--log : Enable logging of the diagnosis results}';
+
     protected $description = 'Diagnose environment configuration issues for your Laravel application';
 
     public function handle(): int
@@ -28,6 +30,9 @@ class EnvDoctorCommand extends Command
         // Directory Permissions Check
         $this->runDirectoryChecks($issues, $totalChecks, $logsEnabled);
 
+        // File Existence Check
+        $this->runFileChecks($issues, $totalChecks, $logsEnabled);
+
         // Show summary
         $this->showSummary($issues, $totalChecks, $logsEnabled);
 
@@ -43,7 +48,7 @@ class EnvDoctorCommand extends Command
             '<fg=blue>└──────────────────────────────────────────────────────────────┘</>',
             '',
             '<fg=gray>Checking your application environment configuration and permissions...</>',
-            ''
+            '',
         ]);
     }
 
@@ -56,7 +61,7 @@ class EnvDoctorCommand extends Command
         $totalChecks += count($envResults);
 
         if ($logEnabled) {
-            \Log::info("[EnvDoctor] ---- ENVIRONMENT VARIABLES CHECK ----");
+            \Log::info('[EnvDoctor] ---- ENVIRONMENT VARIABLES CHECK ----');
         }
 
         $this->renderCheckResults($envResults, $issues, $logEnabled);
@@ -64,7 +69,6 @@ class EnvDoctorCommand extends Command
 
         return $envResults;
     }
-
 
     protected function renderCheckResults(array $results, int &$issues, bool $logEnabled = false): void
     {
@@ -79,23 +83,24 @@ class EnvDoctorCommand extends Command
                     if ($logEnabled) {
                         \Log::error("[EnvDoctor] ✖ FAIL: $message");
                     }
+
                     return [
                         '<fg=red>✖ FAIL</>',
-                        "<fg=white>{$message}</>"
+                        "<fg=white>{$message}</>",
                     ];
                 } else {
                     if ($logEnabled) {
                         \Log::info("[EnvDoctor] ✓ PASS: $message");
                     }
+
                     return [
                         '<fg=green>✓ PASS</>',
-                        "<fg=gray>{$message}</>"
+                        "<fg=gray>{$message}</>",
                     ];
                 }
             }, $results)
         );
     }
-
 
     protected function runDirectoryChecks(int &$issues, int &$totalChecks, bool $logsEnabled = false): array
     {
@@ -106,7 +111,7 @@ class EnvDoctorCommand extends Command
         $totalChecks += count($dirResults);
 
         if ($logsEnabled) {
-            \Log::info("[EnvDoctor] ---- DIRECTORY PERMISSIONS CHECK ----");
+            \Log::info('[EnvDoctor] ---- DIRECTORY PERMISSIONS CHECK ----');
         }
 
         $this->renderCheckResults($dirResults, $issues, $logsEnabled);
@@ -115,12 +120,29 @@ class EnvDoctorCommand extends Command
         return $dirResults;
     }
 
+    protected function runFileChecks(int &$issues, int &$totalChecks, bool $logsEnabled = false): array
+    {
+        $this->output->writeln('<fg=cyan;options=bold>📄 FILE EXISTENCE CHECK</>');
+        $this->line('Verifying required files exist and are accessible');
+
+        $fileResults = FileExistenceCheck::run(config('laravel-env-doctor.files_to_check', []));
+        $totalChecks += count($fileResults);
+
+        if ($logsEnabled) {
+            \Log::info('[EnvDoctor] ---- FILE EXISTENCE CHECK ----');
+        }
+
+        $this->renderCheckResults($fileResults, $issues, $logsEnabled);
+        $this->newLine();
+
+        return $fileResults;
+    }
 
     protected function showSummary(int $issues, int $totalChecks, bool $logsEnabled = false): void
     {
         $successRate = $totalChecks > 0 ? round(($totalChecks - $issues) / $totalChecks * 100) : 100;
         if ($logsEnabled) {
-            \Log::info("[EnvDoctor] ----- DIAGNOSIS SUMMARY -----");
+            \Log::info('[EnvDoctor] ----- DIAGNOSIS SUMMARY -----');
             \Log::info("[EnvDoctor] Total checks performed: $totalChecks");
             \Log::info("[EnvDoctor] Issues found: $issues");
             \Log::info("[EnvDoctor] Success rate: {$successRate}%");
@@ -130,13 +152,13 @@ class EnvDoctorCommand extends Command
             '<fg=blue>┌───────────────────────────────────┐</>',
             '<fg=blue>│</> <fg=white;options=bold>🩺  DIAGNOSIS SUMMARY</>             <fg=blue>│</>',
             '<fg=blue>├───────────────────────────────────┤</>',
-            "<fg=blue>│</> <fg=white>Total checks performed:</> " . str_pad($totalChecks, 10, ' ',
-                STR_PAD_RIGHT) . "<fg=blue>│</>",
-            "<fg=blue>│</> <fg=white>Issues found:</> " . str_pad($issues, 20, ' ', STR_PAD_RIGHT) . "<fg=blue>│</>",
-            "<fg=blue>│</> <fg=white>Success rate:</> " . str_pad("{$successRate}%", 20, ' ',
-                STR_PAD_RIGHT) . "<fg=blue>│</>",
+            '<fg=blue>│</> <fg=white>Total checks performed:</> '.str_pad($totalChecks, 10, ' ',
+                STR_PAD_RIGHT).'<fg=blue>│</>',
+            '<fg=blue>│</> <fg=white>Issues found:</> '.str_pad($issues, 20, ' ', STR_PAD_RIGHT).'<fg=blue>│</>',
+            '<fg=blue>│</> <fg=white>Success rate:</> '.str_pad("{$successRate}%", 20, ' ',
+                STR_PAD_RIGHT).'<fg=blue>│</>',
             '<fg=blue>└───────────────────────────────────┘</>',
-            ''
+            '',
         ]);
 
         if ($issues === 0) {

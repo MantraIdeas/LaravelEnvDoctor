@@ -16,6 +16,7 @@ class EnvCheck
                     'status' => 'fail',
                     'message' => "❌ {$key} is missing.",
                 ];
+
                 continue;
             }
 
@@ -37,5 +38,4 @@ class EnvCheck
 
         return $results;
     }
-
 }
